@@ -1,12 +1,16 @@
+require('dotenv').config(); // Load environment variables from .env
+
 const express = require('express');
 const sqlite3 = require('sqlite3').verbose();
 const bodyParser = require('body-parser');
-let bcrypt = require('bcrypt');
+const bcrypt = require('bcrypt');
 const { check, validationResult } = require('express-validator');
-require('dotenv').config();
 
 const app = express();
-const port = process.env.PORT || 3000;
+
+// Use environment variables for port and database path
+const port = process.env.PORT || 3000; // Default to 3000 if not provided in .env
+const dbPath = process.env.DATABASE_PATH || './data/db.sqlite'; // Default to './data/db.sqlite' if not provided
 
 // Middleware for JSON parsing and CORS headers
 app.use(bodyParser.json());
@@ -16,8 +20,8 @@ app.use((req, res, next) => {
   next();
 });
 
-// Database connection and initialization
-const db = new sqlite3.Database('./data/db.sqlite', (err) => {
+// Database connection and initialization using the path from environment variables
+const db = new sqlite3.Database(dbPath, (err) => {
   if (err) {
     console.error('Could not connect to the database:', err.message);
   } else {
@@ -25,7 +29,7 @@ const db = new sqlite3.Database('./data/db.sqlite', (err) => {
   }
 });
 
-// Users and passwords table creation
+// Create tables for users and passwords
 db.serialize(() => {
   db.run(`CREATE TABLE IF NOT EXISTS users (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -126,7 +130,7 @@ app.delete('/api/delete-password', (req, res) => {
   });
 });
 
-// Server listening on specified port
+// Start server using the port defined in .env
 app.listen(port, () => {
   console.log(`Server running on http://localhost:${port}`);
 });
