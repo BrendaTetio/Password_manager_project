@@ -1,48 +1,10 @@
 // Base URL for API requests
 const API_URL = 'http://localhost:3000/api';
 
-// Function to register a new user
-async function registerUser() {
-    const username = document.getElementById('register-username').value;
-    const password = document.getElementById('register-password').value;
-
-    const response = await fetch(`${API_URL}/register`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ username, password }),
-    });
-
-    const data = await response.json();
-    alert(data.message);
-}
-
-// Function to log in an existing user
-async function loginUser() {
-    const username = document.getElementById('login-username').value;
-    const password = document.getElementById('login-password').value;
-
-    const response = await fetch(`${API_URL}/login`, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ username, password }),
-    });
-
-    const data = await response.json();
-    alert(data.message);
-    if (data.success) {
-        // If login is successful, load saved passwords
-        loadPasswords();
-    }
-}
-
 // Function to save a password
 async function savePassword() {
     const website = document.getElementById('website').value;
-    const username = document.getElementById('password-username').value;
+    const username = document.getElementById('username').value;
     const password = document.getElementById('password').value;
 
     const response = await fetch(`${API_URL}/save-password`, {
@@ -84,44 +46,10 @@ async function loadPasswords() {
     }
 }
 
-// Function to delete a password
-async function deletePassword() {
-    const website = document.getElementById('delete-website').value;
-
-    const response = await fetch(`${API_URL}/delete-password`, {
-        method: 'DELETE',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ website }),
-    });
-
-    const data = await response.json();
-    alert(data.success ? 'Password deleted!' : 'Failed to delete password.');
-    if (data.success) {
-        loadPasswords(); // Reload passwords after deletion
-    }
-}
-
-// Event listeners for form submissions
-document.getElementById('register-form').addEventListener('submit', (e) => {
-    e.preventDefault();
-    registerUser();
-});
-
-document.getElementById('login-form').addEventListener('submit', (e) => {
-    e.preventDefault();
-    loginUser();
-});
-
+// Event listener for form submission
 document.getElementById('save-password-form').addEventListener('submit', (e) => {
     e.preventDefault();
     savePassword();
-});
-
-document.getElementById('delete-password-form').addEventListener('submit', (e) => {
-    e.preventDefault();
-    deletePassword();
 });
 
 // Load passwords on page load
