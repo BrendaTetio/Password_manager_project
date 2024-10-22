@@ -1,7 +1,7 @@
 const sqlite3 = require('sqlite3').verbose();
 
 // Initialize the database with the path from environment variables
-const db = new sqlite3.Database(process.env.DATABASE_PATH || './data/db.sqlite', (err) => {
+const db = new sqlite3.Database(process.env.DB_PATH || './data/db.sqlite', (err) => {
     if (err) {
         console.error('Could not connect to the database:', err.message);
     } else {
