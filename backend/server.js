@@ -117,6 +117,17 @@ app.post('/api/save-password', (req, res) => {
   });
 });
 
+// Load passwords endpoint
+app.get('/api/get-passwords', (req, res) => {
+  db.all('SELECT website, username FROM passwords', [], (err, rows) => {
+    if (err) {
+      res.status(500).json({ success: false, message: 'Error retrieving passwords' });
+    } else {
+      res.json({ success: true, data: rows });
+    }
+  });
+});
+
 // Delete password endpoint
 app.delete('/api/delete-password', (req, res) => {
   const { website } = req.body;
