@@ -8,7 +8,7 @@ const app = express();
 
 // Use environment variables for port and database path
 const port = process.env.PORT || 3000; // Default to 3000 if not provided in .env
-const dbPath = process.env.DATABASE_PATH || './data/db.sqlite'; // Default to './data/db.sqlite' if not provided
+const dbPath = process.env.DB_PATH || './data/db.sqlite'; // Default to './data/db.sqlite' if not provided
 
 // Middleware for JSON parsing and CORS headers
 app.use(bodyParser.json());
