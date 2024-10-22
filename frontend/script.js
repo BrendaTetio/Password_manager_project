@@ -42,7 +42,7 @@ async function loginUser() {
 // Function to save a password
 async function savePassword() {
     const website = document.getElementById('website').value;
-    const username = document.getElementById('password-username').value;
+    const username = document.getElementById('username').value; // Corrected ID
     const password = document.getElementById('password').value;
 
     const response = await fetch(`${API_URL}/save-password`, {
@@ -114,7 +114,7 @@ document.getElementById('login-form').addEventListener('submit', (e) => {
     loginUser();
 });
 
-document.getElementById('save-password-form').addEventListener('submit', (e) => {
+document.getElementById('password-form').addEventListener('submit', (e) => {
     e.preventDefault();
     savePassword();
 });
