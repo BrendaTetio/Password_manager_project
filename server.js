@@ -12,28 +12,29 @@ const db = new sqlite3.Database('./data/database.db');
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, 'frontend')));
 
-// Initialize SQLite database with table
+// Initialize SQLite database with table (now includes username)
 db.run(`
     CREATE TABLE IF NOT EXISTS passwords (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         website TEXT NOT NULL,
+        username TEXT NOT NULL,
         password TEXT NOT NULL
     );
 `);
 
 // Route to handle adding a password (POST request)
 app.post('/add-password', (req, res) => {
-    const { website, password } = req.body;
-    
-    if (!website || !password) {
-        return res.status(400).send('Website and password are required.');
+    const { website, username, password } = req.body;
+
+    if (!website || !username || !password) {
+        return res.status(400).send('Website, username, and password are required.');
     }
 
     // Hash the password
     const hashedPassword = bcrypt.hashSync(password, 10);
 
     // Insert into database
-    db.run('INSERT INTO passwords (website, password) VALUES (?, ?)', [website, hashedPassword], function (err) {
+    db.run('INSERT INTO passwords (website, username, password) VALUES (?, ?, ?)', [website, username, hashedPassword], function (err) {
         if (err) {
             return res.status(500).send('Error saving password');
         }
@@ -43,7 +44,7 @@ app.post('/add-password', (req, res) => {
 
 // Route to fetch all saved passwords (GET request)
 app.get('/passwords', (req, res) => {
-    db.all('SELECT website, password FROM passwords', [], (err, rows) => {
+    db.all('SELECT website, username, password FROM passwords', [], (err, rows) => {
         if (err) {
             return res.status(500).send('Error retrieving passwords');
         }

@@ -1,56 +1,43 @@
-// Base URL for API requests
-const API_URL = 'http://localhost:3000/api';
-
-// Function to save a password
-async function savePassword() {
+document.getElementById('password-form').addEventListener('submit', async function (e) {
+    e.preventDefault();
+    
     const website = document.getElementById('website').value;
     const username = document.getElementById('username').value;
     const password = document.getElementById('password').value;
 
-    const response = await fetch(`${API_URL}/save-password`, {
+    // Send password data to server
+    const response = await fetch('/add-password', {
         method: 'POST',
         headers: {
-            'Content-Type': 'application/json',
+            'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ website, username, password }),
+        body: JSON.stringify({ website, username, password })
     });
 
-    const data = await response.json();
-    alert(data.success ? 'Password saved!' : 'Failed to save password.');
-    if (data.success) {
-        loadPasswords(); // Reload passwords after saving a new one
-    }
-}
+    const result = await response.text();
+    alert(result);
 
-// Function to load and display saved passwords
-async function loadPasswords() {
-    const response = await fetch(`${API_URL}/get-passwords`, {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-    });
+    // Clear form
+    document.getElementById('password-form').reset();
 
-    const data = await response.json();
-    const passwordList = document.getElementById('passwords');
-    passwordList.innerHTML = ''; // Clear the list before displaying
-
-    if (data.success) {
-        data.data.forEach(password => {
-            const listItem = document.createElement('li');
-            listItem.textContent = `${password.website} - ${password.username}`;
-            passwordList.appendChild(listItem);
-        });
-    } else {
-        alert('Failed to load passwords.');
-    }
-}
-
-// Event listener for form submission
-document.getElementById('save-password-form').addEventListener('submit', (e) => {
-    e.preventDefault();
-    savePassword();
+    // Fetch the updated list of passwords
+    fetchPasswords();
 });
 
-// Load passwords on page load
-window.onload = loadPasswords;
+// Fetch and display saved passwords
+async function fetchPasswords() {
+    const response = await fetch('/passwords');
+    const passwords = await response.json();
+
+    const passwordList = document.getElementById('password-list');
+    passwordList.innerHTML = '';
+
+    passwords.forEach(item => {
+        const li = document.createElement('li');
+        li.textContent = `Website: ${item.website}, Username: ${item.username}, Password: ${item.password}`;
+        passwordList.appendChild(li);
+    });
+}
+
+// Fetch passwords on page load
+fetchPasswords();

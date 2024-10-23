@@ -1,44 +1,60 @@
 body {
   font-family: Arial, sans-serif;
-  background-color: #f4f4f9;
+  background-color: #f4f4f4;
   margin: 0;
-  padding: 0;
+  padding: 20px;
 }
 
 .container {
   max-width: 500px;
-  margin: 20px auto;
+  margin: 0 auto;
   padding: 20px;
   background-color: white;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-form input, form button {
-  display: block;
-  width: 100%;
+h1 {
+  text-align: center;
+  color: #333;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+}
+
+input {
   margin-bottom: 10px;
   padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
 }
 
-form button {
-  background-color: #007BFF;
+button {
+  padding: 10px;
+  font-size: 16px;
+  background-color: #28a745;
   color: white;
   border: none;
+  border-radius: 5px;
   cursor: pointer;
 }
 
-form button:hover {
-  background-color: #0056b3;
+button:hover {
+  background-color: #218838;
 }
 
-#password-list {
-  margin-top: 20px;
+ul {
+  list-style-type: none;
+  padding: 0;
 }
 
-#passwords li {
-  background-color: #efefef;
-  padding: 10px;
+li {
+  background-color: #f9f9f9;
   margin-bottom: 10px;
-  display: flex;
-  justify-content: space-between;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
 }
